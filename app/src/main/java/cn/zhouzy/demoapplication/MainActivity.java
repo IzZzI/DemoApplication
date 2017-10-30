@@ -1,5 +1,6 @@
 package cn.zhouzy.demoapplication;
 
+import android.app.Activity;
 import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -12,15 +13,12 @@ import android.widget.Toast;
 import java.util.Locale;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
 
-    /**
-     * 启动任务按钮
-     */
-    @BindView(R.id.main_btn_start)
-    Button mMainBtnStart;
+
     /**
      * 文本转语音API
      */
@@ -34,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         //初始化文本转语音API
         initTTS();
     }
@@ -83,5 +82,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             //设置语言为中文
             mTextToSpeech.setLanguage(Locale.CHINA);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mTextToSpeech.stop();
+        mTextToSpeech.shutdown();
     }
 }
